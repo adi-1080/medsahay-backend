@@ -10,6 +10,21 @@ const DoctorSchema = new Schema(
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
 
     name: { type: String, required: true },
+    // HPR ID: unique identifier for doctor verification
+    hpr_id: { type: String, required: true, unique: true, sparse: true },
+
+    // Verification status: 'pending_verification', 'verified', 'rejected'
+    verification_status: {
+      type: String,
+      enum: ['pending_verification', 'verified', 'rejected'],
+      default: 'pending_verification',
+    },
+
+    // Admin notes/reason for rejection or verification
+    verification_notes: { type: String },
+    verification_date: { type: Date },
+    verified_by_admin: { type: Schema.Types.ObjectId, ref: 'User' }, // Admin who verified
+
     qualifications: [{ type: String }], // e.g. ["MBBS", "MD (General Medicine)"]
     specialty: { type: String, required: true },
     category: { type: String }, // e.g. "Cardiology", "Dentist"

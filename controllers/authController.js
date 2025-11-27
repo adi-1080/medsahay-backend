@@ -51,6 +51,10 @@ export const signup = async (req, res) => {
       return res.status(400).json({ detail: 'Passwords do not match.' });
     }
 
+    if (!['patient', 'doctor', 'admin'].includes(role)) {
+      return res.status(400).json({ detail: 'Invalid role. Must be patient, doctor, or admin.' });
+    }
+
     const existing = await User.findOne({ email });
     if (existing) {
       return res.status(409).json({ detail: 'Email already registered.' });
